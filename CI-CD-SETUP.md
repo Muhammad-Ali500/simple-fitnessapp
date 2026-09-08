@@ -67,7 +67,7 @@ Once it's on Docker Hub, anyone can pull and run it without cloning the repo:
 
 ```bash
 docker pull <your-dockerhub-username>/simple-fitnessapp:latest
-docker run -d --name fitnessapp -p 8080:80 <your-dockerhub-username>/simple-fitnessapp:latest
+docker run -d --name fitnessapp -p 8080:8080 <your-dockerhub-username>/simple-fitnessapp:latest
 ```
 
 Then open http://localhost:8080
@@ -88,7 +88,7 @@ node test.js
 docker build -t simple-fitnessapp:local .
 
 # 3. Run it and check it in a browser
-docker run -d --name fitnessapp-local -p 8080:80 simple-fitnessapp:local
+docker run -d --name fitnessapp-local -p 8080:8080 simple-fitnessapp:local
 # open http://localhost:8080
 
 # 4. Clean up
@@ -312,10 +312,9 @@ a PR gate, and use this for deployment — just know the two aren't linked, so a
    - **Region**: pick one close to you, e.g. `us-central1`
    - **Authentication**: select **Allow unauthenticated invocations** (this is a
      public site, not an API)
-   - **Container port**: set this to `80`. This matters — Cloud Run defaults to
-     expecting the container to listen on port `8080`, but `nginx.conf` in this repo
-     has the app listening on port `80`. Setting this field to `80` tells Cloud Run to
-     send traffic to the port nginx is actually using.
+   - **Container port**: leave this at the default `8080` — `nginx.conf` in this repo
+     listens on `0.0.0.0:8080`, which matches what Cloud Run expects out of the box,
+     so no override is needed.
    - CPU/memory defaults are fine for a static site — no need to change them.
 
 8. Click **Create**.
