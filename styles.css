@@ -1,0 +1,164 @@
+:root {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --accent: #22c55e;
+  --accent-dark: #16a34a;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --border: #334155;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+header h1 {
+  margin: 0 0 4px;
+  font-size: 1.8rem;
+}
+
+header p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  background: var(--card);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.15s ease;
+}
+
+.tab-btn:hover {
+  color: var(--text);
+}
+
+.tab-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #06210f;
+  font-weight: 600;
+}
+
+.panel {
+  display: none;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.panel.active {
+  display: block;
+}
+
+.panel h2 {
+  margin-top: 0;
+}
+
+.field {
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.row {
+  display: flex;
+  gap: 12px;
+}
+
+.row .field {
+  flex: 1;
+}
+
+input,
+select {
+  background: #0f172a;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+button[type="submit"] {
+  width: 100%;
+  background: var(--accent);
+  color: #06210f;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+button[type="submit"]:hover {
+  background: var(--accent-dark);
+}
+
+.result {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #0b1220;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  display: none;
+}
+
+.result.show {
+  display: block;
+  color: var(--text);
+}
+
+footer {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-top: 32px;
+}

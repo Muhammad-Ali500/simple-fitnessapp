@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fitness Calculators</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>Fitness Calculators</h1>
+    <p>BMI, BMR/TDEE, body fat, ideal weight, 1RM, water &amp; calorie goals</p>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-target="panel-bmi">BMI</button>
+    <button class="tab-btn" data-target="panel-bmr">BMR / TDEE</button>
+    <button class="tab-btn" data-target="panel-bf">Body Fat %</button>
+    <button class="tab-btn" data-target="panel-iw">Ideal Weight</button>
+    <button class="tab-btn" data-target="panel-orm">One-Rep Max</button>
+    <button class="tab-btn" data-target="panel-water">Water Intake</button>
+    <button class="tab-btn" data-target="panel-cal">Calorie Goal</button>
+  </nav>
+
+  <!-- BMI -->
+  <section id="panel-bmi" class="panel active">
+    <h2>BMI Calculator</h2>
+    <form id="bmi-form">
+      <div class="row">
+        <div class="field">
+          <label for="bmi-weight">Weight (kg)</label>
+          <input type="number" id="bmi-weight" step="0.1" min="1" required />
+        </div>
+        <div class="field">
+          <label for="bmi-height">Height (cm)</label>
+          <input type="number" id="bmi-height" step="0.1" min="1" required />
+        </div>
+      </div>
+      <button type="submit">Calculate BMI</button>
+    </form>
+    <div id="bmi-result" class="result"></div>
+  </section>
+
+  <!-- BMR / TDEE -->
+  <section id="panel-bmr" class="panel">
+    <h2>BMR &amp; TDEE Calculator</h2>
+    <form id="bmr-form">
+      <div class="field">
+        <label for="bmr-gender">Gender</label>
+        <select id="bmr-gender">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="bmr-weight">Weight (kg)</label>
+          <input type="number" id="bmr-weight" step="0.1" min="1" required />
+        </div>
+        <div class="field">
+          <label for="bmr-height">Height (cm)</label>
+          <input type="number" id="bmr-height" step="0.1" min="1" required />
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="bmr-age">Age (years)</label>
+          <input type="number" id="bmr-age" step="1" min="1" required />
+        </div>
+        <div class="field">
+          <label for="bmr-activity">Activity level</label>
+          <select id="bmr-activity">
+            <option value="1.2">Sedentary</option>
+            <option value="1.375">Light exercise</option>
+            <option value="1.55" selected>Moderate exercise</option>
+            <option value="1.725">Active</option>
+            <option value="1.9">Very active</option>
+          </select>
+        </div>
+      </div>
+      <button type="submit">Calculate BMR / TDEE</button>
+    </form>
+    <div id="bmr-result" class="result"></div>
+  </section>
+
+  <!-- Body Fat % -->
+  <section id="panel-bf" class="panel">
+    <h2>Body Fat % (U.S. Navy method)</h2>
+    <form id="bf-form">
+      <div class="field">
+        <label for="bf-gender">Gender</label>
+        <select id="bf-gender">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="bf-height">Height (cm)</label>
+          <input type="number" id="bf-height" step="0.1" min="1" required />
+        </div>
+        <div class="field">
+          <label for="bf-neck">Neck (cm)</label>
+          <input type="number" id="bf-neck" step="0.1" min="1" required />
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label for="bf-waist">Waist (cm)</label>
+          <input type="number" id="bf-waist" step="0.1" min="1" required />
+        </div>
+        <div class="field" id="bf-hip-field" style="display:none">
+          <label for="bf-hip">Hip (cm, women only)</label>
+          <input type="number" id="bf-hip" step="0.1" min="1" />
+        </div>
+      </div>
+      <button type="submit">Calculate Body Fat %</button>
+    </form>
+    <div id="bf-result" class="result"></div>
+  </section>
+
+  <!-- Ideal Weight -->
+  <section id="panel-iw" class="panel">
+    <h2>Ideal Weight (Devine formula)</h2>
+    <form id="iw-form">
+      <div class="field">
+        <label for="iw-gender">Gender</label>
+        <select id="iw-gender">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="iw-height">Height (cm)</label>
+        <input type="number" id="iw-height" step="0.1" min="1" required />
+      </div>
+      <button type="submit">Calculate Ideal Weight</button>
+    </form>
+    <div id="iw-result" class="result"></div>
+  </section>
+
+  <!-- One-Rep Max -->
+  <section id="panel-orm" class="panel">
+    <h2>One-Rep Max (Epley formula)</h2>
+    <form id="orm-form">
+      <div class="row">
+        <div class="field">
+          <label for="orm-weight">Weight lifted</label>
+          <input type="number" id="orm-weight" step="0.1" min="1" required />
+        </div>
+        <div class="field">
+          <label for="orm-reps">Reps performed</label>
+          <input type="number" id="orm-reps" step="1" min="1" required />
+        </div>
+      </div>
+      <button type="submit">Calculate 1RM</button>
+    </form>
+    <div id="orm-result" class="result"></div>
+  </section>
+
+  <!-- Water Intake -->
+  <section id="panel-water" class="panel">
+    <h2>Daily Water Intake</h2>
+    <form id="water-form">
+      <div class="field">
+        <label for="water-weight">Weight (kg)</label>
+        <input type="number" id="water-weight" step="0.1" min="1" required />
+      </div>
+      <button type="submit">Calculate Water Intake</button>
+    </form>
+    <div id="water-result" class="result"></div>
+  </section>
+
+  <!-- Calorie Goal -->
+  <section id="panel-cal" class="panel">
+    <h2>Calorie Goal</h2>
+    <form id="cal-form">
+      <div class="field">
+        <label for="cal-tdee">Your TDEE (kcal/day)</label>
+        <input type="number" id="cal-tdee" step="1" min="1" required />
+      </div>
+      <div class="field">
+        <label for="cal-goal">Goal</label>
+        <select id="cal-goal">
+          <option value="lose">Lose weight (-500 kcal)</option>
+          <option value="maintain">Maintain weight</option>
+          <option value="gain">Gain weight (+500 kcal)</option>
+        </select>
+      </div>
+      <button type="submit">Calculate Target Calories</button>
+    </form>
+    <div id="cal-result" class="result"></div>
+  </section>
+
+  <footer>Estimates only — not medical advice.</footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
