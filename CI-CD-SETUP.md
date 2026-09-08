@@ -267,3 +267,76 @@ gcloud run deploy simple-fitnessapp \
 
 `gcloud` prints the live URL when this finishes — open it to confirm the calculators
 work in production before we automate the deploy step in CI.
+
+## Alternative: setting up CI/CD entirely in the GCP Console (no GitHub Actions)
+
+Everything above wires GitHub Actions to GCP. GCP also has its own built-in way to
+watch a GitHub repo and auto-build/auto-deploy on every push, configured entirely
+through the **Cloud Run console** — no workflow YAML, no secrets to manage on the
+GitHub side. Under the hood it creates a **Cloud Build trigger** for you.
+
+**Trade-off vs. the GitHub Actions approach**: this is faster to set up and needs zero
+GitHub secrets, but it deploys on every push to `main` regardless of whether
+`node test.js` passes — Cloud Build doesn't know about the `test` job in
+`ci-cd.yml`. If you want deploys blocked on tests passing, use the GitHub Actions
+route above instead. You can also run both: keep GitHub Actions for the `test` job as
+a PR gate, and use this for deployment — just know the two aren't linked, so a broken
+`main` could still get deployed via this path.
+
+### Steps
+
+1. Go to the Cloud Run console: https://console.cloud.google.com/run
+   Make sure the correct project is selected in the project picker at the top.
+
+2. Click **Create service**.
+
+3. Select **Continuously deploy from a repository (source or function)**, then click
+   **Set up with Cloud Build**.
+
+4. Under **Repository provider**, choose **GitHub**, then click **Authenticate**.
+   - A popup asks you to install/authorize the **Google Cloud Build** GitHub App.
+   - Grant it access to `Muhammad-Ali500/simple-fitnessapp` (either just this repo, or
+     all repos — this repo only is the safer choice).
+
+5. Back in the console, select the repository `Muhammad-Ali500/simple-fitnessapp` from
+   the dropdown, then click **Next**.
+
+6. Configure the build:
+   - **Branch**: `^main$` (this is a regex — it means "only the `main` branch")
+   - **Build type**: choose **Dockerfile**
+   - **Source location**: `/Dockerfile` (the default, since it's at the repo root)
+   - Click **Save**.
+
+7. Configure the service itself (same screen, below the build config):
+   - **Service name**: `simple-fitnessapp`
+   - **Region**: pick one close to you, e.g. `us-central1`
+   - **Authentication**: select **Allow unauthenticated invocations** (this is a
+     public site, not an API)
+   - **Container port**: set this to `80`. This matters — Cloud Run defaults to
+     expecting the container to listen on port `8080`, but `nginx.conf` in this repo
+     has the app listening on port `80`. Setting this field to `80` tells Cloud Run to
+     send traffic to the port nginx is actually using.
+   - CPU/memory defaults are fine for a static site — no need to change them.
+
+8. Click **Create**.
+
+   GCP now creates the Cloud Build trigger and kicks off the first build immediately.
+   You can watch it under **Cloud Build → History** in the console, or from the
+   service's **Build History** tab in Cloud Run.
+
+9. When the first build finishes, the Cloud Run console shows a URL like:
+   `https://simple-fitnessapp-xxxxxxxxxx-uc.a.run.app`
+   Open it to confirm the calculators work.
+
+10. From now on, **every push to `main` automatically triggers a new build and
+    deploy** — that's the CI/CD, fully configured through the console. Nothing else
+    to do.
+
+### Where to check on it later
+
+- **Build history / logs**: Cloud Build console → History, or Cloud Run service →
+  **Build History** tab — shows every build triggered by a push, pass or fail.
+- **Live traffic / revisions**: Cloud Run service → **Revisions** tab — shows each
+  deployed version and lets you roll back to a previous revision if a bad push goes
+  out.
+- **Runtime logs**: Cloud Run service → **Logs** tab.
